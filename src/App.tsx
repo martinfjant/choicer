@@ -1,38 +1,26 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as hoteldata from './hoteldata.json';
-const data = hoteldata.hotels
+import Filter from './pages/filter';
+import { Hotel } from './types/hoteldata.js';
+
 
 
 const App: React.FC = () => {
+  const data: any = hoteldata.hotels
   return (
-    <div className="container mx-auto px-4">
+    <>
       <menu>
-        <ul>
-          <li>Search</li>
-          <li>Filter</li>
+        <ul className="flex">
+          <li className="bg-gray-500 text-xl m-4 p-2 rounded-lg">Search</li>
+          <li className="bg-gray-500 text-xl m-4 p-2 rounded-lg">Filter</li>
+          <li className="bg-gray-500 text-xl m-4 p-2 rounded-lg">Starred</li>
         </ul>
       </menu>
-      <dl>
-        {data.map(item => {
-          return (
-            <>
-              <dt className="bg-gray-500 text-xl mt-4 p-2 rounded-t-lg">
-                <h2>{item.name}</h2> in {item.address.country}
-              </dt>
-              <dd className="bg-gray-200 rounded-b-lg p-2">
-                {item.roomCapacity} rooms
-              <div>
-                  {item.address.streetAddress}<br />
-                  {item.address.city}&nbsp;{item.address.city}<br />
-                  {item.address.country}
-                </div>
-              </dd>
-            </>
-          )
-        }
-        )}
-      </dl>
-    </div>
+    <Router>
+      <Route path="/filter" render={(props) => <Filter {...props} data={data} />} />
+    </Router>
+    </>
   );
 }
 
