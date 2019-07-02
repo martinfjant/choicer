@@ -1,11 +1,13 @@
 // Here be filter
 export const filterByValue = (data: Array<any>, value: string | number) => {
-  console.log(value);
   const stuff = data.filter(x => deepObjectIncludes(x, value));
-  console.log(stuff);
   return stuff;
 };
 
+/* So, this is a little bit overkill, but I wanted to be able to filter on any value,
+   no matter where it was. This can be used to filter on any value if need be, and it
+   is recursive too! */
+   
 const deepObjectIncludes = (
   obj: object | any,
   value: string | number
