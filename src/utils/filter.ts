@@ -1,6 +1,9 @@
 // Here be filter
 export const filterByValue = (data: Array<any>, value: string | number) => {
-  return data.filter(x => deepObjectIncludes(x, value));
+  console.log(value);
+  const stuff = data.filter(x => deepObjectIncludes(x, value));
+  console.log(stuff);
+  return stuff;
 };
 
 const deepObjectIncludes = (
@@ -18,7 +21,7 @@ const deepObjectIncludes = (
       /*Map over those keys, checking if their value is an object*/
       /*Also, because javascript is weird, null is an object, so we need to check for that too */
       .map(key => {
-        if (typeof obj[key] == 'object' && !obj[key] == null) {
+        if (typeof obj[key] == 'object' && obj[key] !== null) {
           /*If it is an object, run the function recursively*/
           return deepObjectIncludes(obj[key], value);
         } else {

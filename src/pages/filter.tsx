@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Hotel } from '../types/hoteldata';
-import * as hoteldata from '../hoteldata.json';
+import { filterByValue } from '../utils/filter';
+import Box from '../components/box';
 
 
 interface FilterProps {
@@ -10,39 +11,38 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ data }) => {
 
   /* Here be state! */
-  const [hotelList, setHotelList] = useState([data])
+  const [hotelList, setHotelList] = useState(data)
+  const [isFiltered, setIsFiltered] = useState(false)
   /* Here be toggle triggers */
 
   const filters = [
-    { label: "Sweden", value: "sweden" },
-    { label: "Norway", value: "norway" },
-    { label: "Denmark", value: "denmark" },
-    { label: "Finland", value: "finland" }
+    { label: "Sweden", value: "Sweden" },
+    { label: "Norway", value: "Norway" },
+    { label: "Denmark", value: "Denmark" },
+    { label: "Finland", value: "Finland" }
   ]
 
+  const doFilter = (value: string) => {
+    console.log("Running filter " + value)
+    const filterData = filterByValue(data, value);
+    console.log(filterData)
+    setHotelList(filterData);
+    setIsFiltered(true)
+  }
+
+  const defilter = () => {
+    setHotelList(data);
+    setIsFiltered(false)
+  }
   return (
     <div className="container mx-auto px-4">
       <ul className="flex">
-        {filters.map(filter => <li className="m-2">{filter.label}</li>)}
+        {filters.map(filter => <li className="m-2" onClick={() => doFilter(filter.value)}>{filter.label}</li>)}
+        <li className="m-2 bg-red-200" onClick={() => defilter()}>Remove filter</li>
       </ul>
+      <p>Showing {hotelList.length} Hotels!</p>
       <dl>
-        {data.map((item: Hotel) => {
-          return (
-            <>
-              <dt className="bg-gray-500 text-xl mt-4 p-2 rounded-t-lg">
-                <h2>{item.name}</h2> in {item.address.country}
-              </dt>
-              <dd className="bg-gray-200 rounded-b-lg p-2">
-                {item.roomCapacity} rooms
-              <div>
-                  {item.address.streetAddress}<br />
-                  {item.address.postalCode}&nbsp;{item.address.city}<br />
-                  {item.address.country}
-                </div>
-              </dd>
-            </>
-          )
-        }
+        {hotelList.map((item: Hotel) => <Box data={item} />
         )}
       </dl>
     </div>
